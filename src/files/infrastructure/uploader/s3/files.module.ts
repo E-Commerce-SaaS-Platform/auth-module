@@ -1,29 +1,22 @@
+import { S3Client } from '@aws-sdk/client-s3';
 import {
   HttpStatus,
   Module,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { FilesS3Controller } from './files.controller';
-import { MulterModule } from '@nestjs/platform-express';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
-import { S3Client } from '@aws-sdk/client-s3';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MulterModule } from '@nestjs/platform-express';
 import multerS3 from 'multer-s3';
+import { FilesS3Controller } from './files.controller';
 
 import { FilesS3Service } from './files.service';
 
-import { DocumentFilePersistenceModule } from '../../persistence/document/document-persistence.module';
-import { RelationalFilePersistenceModule } from '../../persistence/relational/relational-persistence.module';
 import { AllConfigType } from '../../../../config/config.type';
-import { DatabaseConfig } from '../../../../database/config/database-config.type';
-import databaseConfig from '../../../../database/config/database.config';
+import { RelationalFilePersistenceModule } from '../../persistence/relational/relational-persistence.module';
 
-// <database-block>
-const infrastructurePersistenceModule = (databaseConfig() as DatabaseConfig)
-  .isDocumentDatabase
-  ? DocumentFilePersistenceModule
-  : RelationalFilePersistenceModule;
-// </database-block>
+// Use only relational database (PostgreSQL)
+const infrastructurePersistenceModule = RelationalFilePersistenceModule;
 
 @Module({
   imports: [

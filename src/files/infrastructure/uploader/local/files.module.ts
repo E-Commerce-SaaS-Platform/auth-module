@@ -3,26 +3,19 @@ import {
   Module,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { FilesLocalController } from './files.controller';
-import { MulterModule } from '@nestjs/platform-express';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { diskStorage } from 'multer';
 import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MulterModule } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { FilesLocalController } from './files.controller';
 
 import { FilesLocalService } from './files.service';
 
-import { DocumentFilePersistenceModule } from '../../persistence/document/document-persistence.module';
-import { RelationalFilePersistenceModule } from '../../persistence/relational/relational-persistence.module';
 import { AllConfigType } from '../../../../config/config.type';
-import { DatabaseConfig } from '../../../../database/config/database-config.type';
-import databaseConfig from '../../../../database/config/database.config';
+import { RelationalFilePersistenceModule } from '../../persistence/relational/relational-persistence.module';
 
-// <database-block>
-const infrastructurePersistenceModule = (databaseConfig() as DatabaseConfig)
-  .isDocumentDatabase
-  ? DocumentFilePersistenceModule
-  : RelationalFilePersistenceModule;
-// </database-block>
+// Use only relational database (PostgreSQL)
+const infrastructurePersistenceModule = RelationalFilePersistenceModule;
 
 @Module({
   imports: [
