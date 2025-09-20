@@ -4,19 +4,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { HeaderResolver, I18nModule } from 'nestjs-i18n';
 import path from 'path';
 import { DataSource, DataSourceOptions } from 'typeorm';
-import { AuthModule } from './auth/auth.module';
-import authConfig from './auth/config/auth.config';
 import appConfig from './config/app.config';
 import { AllConfigType } from './config/config.type';
 import databaseConfig from './database/config/database.config';
 import { TypeOrmConfigService } from './database/typeorm-config.service';
 import fileConfig from './files/config/file.config';
 import { FilesModule } from './files/files.module';
-import mailConfig from './mail/config/mail.config';
-import { MailModule } from './mail/mail.module';
-import { MailerModule } from './mailer/mailer.module';
-import { SessionModule } from './session/session.module';
-import { UsersModule } from './users/users.module';
+import { RabbitMQModule } from './rabbitmq/rabbitmq.module';
 
 // Database configuration for PostgreSQL only
 const infrastructureDatabaseModule = TypeOrmModule.forRootAsync({
@@ -30,7 +24,7 @@ const infrastructureDatabaseModule = TypeOrmModule.forRootAsync({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig, authConfig, appConfig, mailConfig, fileConfig],
+      load: [databaseConfig, appConfig, fileConfig],
       envFilePath: ['.env'],
     }),
     infrastructureDatabaseModule,
@@ -57,12 +51,8 @@ const infrastructureDatabaseModule = TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
     }),
-    UsersModule,
     FilesModule,
-    AuthModule,
-    SessionModule,
-    MailModule,
-    MailerModule,
+    RabbitMQModule,
   ],
 })
 export class AppModule {}

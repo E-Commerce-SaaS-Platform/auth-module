@@ -1,6 +1,6 @@
-# @E-Commerce-SaaS-Platform/auth-module
+# RabbitMQ Consumer Module
 
-A NestJS RabbitMQ consumer module that subscribes to queues and emits events for other services to listen to.
+This module provides a RabbitMQ consumer that subscribes to queues and emits events for other services to listen to using the `@golevelup/nestjs-rabbitmq` package.
 
 ## Features
 
@@ -10,16 +10,6 @@ A NestJS RabbitMQ consumer module that subscribes to queues and emits events for
 - **Publisher Service**: Optional message publishing capabilities
 - **Configuration**: Environment-based configuration management
 - **Type Safety**: Full TypeScript support with DTOs and interfaces
-
-## Installation
-
-```bash
-# Using yarn
-yarn add @E-Commerce-SaaS-Platform/auth-module
-
-# Using npm
-npm install @E-Commerce-SaaS-Platform/auth-module
-```
 
 ## Configuration
 
@@ -38,24 +28,12 @@ RABBITMQ_RECONNECT_TIME=5
 
 ## Usage
 
-### 1. Import the Module
-
-```typescript
-import { Module } from '@nestjs/common';
-import { RabbitMQModule } from '@E-Commerce-SaaS-Platform/auth-module';
-
-@Module({
-  imports: [RabbitMQModule],
-})
-export class AppModule {}
-```
-
-### 2. Listen to Events
+### Listening to Events
 
 ```typescript
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { RabbitMQEventListenerService } from '@E-Commerce-SaaS-Platform/auth-module';
-import { RabbitMQMessageDto } from '@E-Commerce-SaaS-Platform/auth-module';
+import { RabbitMQEventListenerService } from './rabbitmq/services/rabbitmq-event-listener.service';
+import { RabbitMQMessageDto } from './rabbitmq/dto/rabbitmq-message.dto';
 
 @Injectable()
 export class UserService implements OnModuleInit {
@@ -81,11 +59,12 @@ export class UserService implements OnModuleInit {
 }
 ```
 
-### 3. Publish Messages (Optional)
+### Publishing Messages (Optional)
 
 ```typescript
 import { Injectable } from '@nestjs/common';
-import { RabbitMQPublisherService, RabbitMQMessageDto } from '@E-Commerce-SaaS-Platform/auth-module';
+import { RabbitMQPublisherService } from './rabbitmq/services/rabbitmq-publisher.service';
+import { RabbitMQMessageDto } from './rabbitmq/dto/rabbitmq-message.dto';
 
 @Injectable()
 export class UserService {
@@ -111,6 +90,18 @@ export class UserService {
 }
 ```
 
+### Message DTO Structure
+
+```typescript
+interface RabbitMQMessageDto<T = any> {
+  event: string;                    // Event type
+  correlationId?: string;          // Unique correlation ID
+  timestamp?: string;              // Message timestamp
+  data?: T;                        // Message payload
+  metadata?: Record<string, any>;  // Additional metadata
+}
+```
+
 ## Available Events
 
 - `user.created` - User creation events
@@ -118,25 +109,38 @@ export class UserService {
 - `user.deleted` - User deletion events
 - `email.notification` - Email notification events
 
+## Available Queues
+
+- `user.created` - User creation events
+- `user.updated` - User update events  
+- `user.deleted` - User deletion events
+- `email.notification` - Email notification events
+
+## Available Exchanges
+
+- `user-service` - Default exchange
+- `user-service.user` - User-related events
+- `user-service.notification` - Notification events
+
+## Error Handling
+
+The module includes comprehensive error handling:
+
+- Connection retry logic
+- Message acknowledgment
+- Dead letter queue support
+- Logging for debugging
+
+## Testing
+
+To test the RabbitMQ module:
+
+1. Start RabbitMQ server
+2. Run the application
+3. Publish messages to the queues
+4. Check logs for event processing
+
 ## Dependencies
 
-This package requires the following peer dependencies:
-
-- `@nestjs/common` (^10.0.0 || ^11.0.0)
-- `@nestjs/core` (^10.0.0 || ^11.0.0)
-- `@nestjs/config` (^3.0.0 || ^4.0.0)
-- `@golevelup/nestjs-rabbitmq` (^2.0.0 || ^3.0.0)
-- `amqplib` (^0.10.0 || ^0.11.0)
-- `rxjs` (^7.0.0 || ^8.0.0)
-
-## License
-
-MIT
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+- `@golevelup/nestjs-rabbitmq` - Core RabbitMQ integration
+- `amqplib` - AMQP client library
