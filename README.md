@@ -13,6 +13,25 @@ A NestJS RabbitMQ consumer module that subscribes to queues and emits events for
 
 ## Installation
 
+### Method 1: Direct GitHub Installation (Recommended)
+```bash
+# Using yarn
+yarn add https://github.com/E-Commerce-SaaS-Platform/auth-module.git
+
+# Using npm
+npm install https://github.com/E-Commerce-SaaS-Platform/auth-module.git
+```
+
+### Method 2: GitHub Shorthand
+```bash
+# Using yarn
+yarn add E-Commerce-SaaS-Platform/auth-module
+
+# Using npm
+npm install E-Commerce-SaaS-Platform/auth-module
+```
+
+### Method 3: Using Package Registry
 ```bash
 # Using yarn
 yarn add @E-Commerce-SaaS-Platform/auth-module

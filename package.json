@@ -1,6 +1,6 @@
 {
-  "name": "@E-Commerce-SaaS-Platform/auth-module",
-  "version": "1.0.1",
+  "name": "@e-commerce-saas-platform/auth-module",
+  "version": "1.0.0",
   "description": "A NestJS RabbitMQ consumer module that subscribes to queues and emits events for other services to listen to",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -39,10 +39,6 @@
     "url": "https://github.com/E-Commerce-SaaS-Platform/auth-module/issues"
   },
   "homepage": "https://github.com/E-Commerce-SaaS-Platform/auth-module#readme",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com",
-    "@E-Commerce-SaaS-Platform:registry": "https://npm.pkg.github.com"
-  },
   "peerDependencies": {
     "@nestjs/common": "^10.0.0 || ^11.0.0",
     "@nestjs/core": "^10.0.0 || ^11.0.0",
