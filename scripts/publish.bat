@@ -27,8 +27,8 @@ REM Build the package
 call npm run build
 IF ERRORLEVEL 1 goto :fail
 
-REM Run tests
-call npm test --passWithNoTests
+REM Run tests (forward flag to jest via npm)
+call npm test -- --passWithNoTests
 IF ERRORLEVEL 1 goto :fail
 
 REM Publish to GitHub Package Registry
