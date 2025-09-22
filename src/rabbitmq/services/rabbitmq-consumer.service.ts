@@ -15,73 +15,47 @@ export class RabbitMQConsumerService implements OnModuleInit {
   }
 
   @RabbitSubscribe({
-    queue: 'user.created',
-    exchange: 'user-service.user',
-    routingKey: 'user.created',
+    queue: 'keycloak.user.registered',
+    exchange: 'amq.topic',
+    routingKey: 'KK.EVENT.CLIENT.*.SUCCESS.*.REGISTER',
   })
-  handleUserCreated(message: RabbitMQMessageDto) {
+  handleKeycloakUserRegistered(message: RabbitMQMessageDto) {
     try {
-      this.logger.log('Received user created message', {
+      this.logger.log('Received Keycloak user registered message', {
         correlationId: message.correlationId,
+        event: message.event,
+        data: message.data,
       });
-      this.eventEmitter.emitUserCreated(message);
-      this.logger.log('User created event emitted successfully');
+      this.eventEmitter.emitKeycloakUserRegistered(message);
+      this.logger.log('Keycloak user registered event emitted successfully');
     } catch (error) {
-      this.logger.error('Failed to process user created message', error);
+      this.logger.error(
+        'Failed to process Keycloak user registered message',
+        error,
+      );
       throw error;
     }
   }
 
   @RabbitSubscribe({
-    queue: 'user.updated',
-    exchange: 'user-service.user',
-    routingKey: 'user.updated',
+    queue: 'keycloak.user.logged_in',
+    exchange: 'amq.topic',
+    routingKey: 'KK.EVENT.CLIENT.*.SUCCESS.*.LOGIN',
   })
-  handleUserUpdated(message: RabbitMQMessageDto) {
+  handleKeycloakUserLoggedIn(message: RabbitMQMessageDto) {
     try {
-      this.logger.log('Received user updated message', {
+      this.logger.log('Received Keycloak user logged in message', {
         correlationId: message.correlationId,
+        event: message.event,
+        data: message.data,
       });
-      this.eventEmitter.emitUserUpdated(message);
-      this.logger.log('User updated event emitted successfully');
+      this.eventEmitter.emitKeycloakUserLoggedIn(message);
+      this.logger.log('Keycloak user logged in event emitted successfully');
     } catch (error) {
-      this.logger.error('Failed to process user updated message', error);
-      throw error;
-    }
-  }
-
-  @RabbitSubscribe({
-    queue: 'user.deleted',
-    exchange: 'user-service.user',
-    routingKey: 'user.deleted',
-  })
-  handleUserDeleted(message: RabbitMQMessageDto) {
-    try {
-      this.logger.log('Received user deleted message', {
-        correlationId: message.correlationId,
-      });
-      this.eventEmitter.emitUserDeleted(message);
-      this.logger.log('User deleted event emitted successfully');
-    } catch (error) {
-      this.logger.error('Failed to process user deleted message', error);
-      throw error;
-    }
-  }
-
-  @RabbitSubscribe({
-    queue: 'email.notification',
-    exchange: 'user-service.notification',
-    routingKey: 'email.*',
-  })
-  handleEmailNotification(message: RabbitMQMessageDto) {
-    try {
-      this.logger.log('Received email notification message', {
-        correlationId: message.correlationId,
-      });
-      this.eventEmitter.emitEmailNotification(message);
-      this.logger.log('Email notification event emitted successfully');
-    } catch (error) {
-      this.logger.error('Failed to process email notification message', error);
+      this.logger.error(
+        'Failed to process Keycloak user logged in message',
+        error,
+      );
       throw error;
     }
   }

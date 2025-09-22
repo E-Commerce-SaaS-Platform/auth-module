@@ -27,24 +27,14 @@ export class RabbitMQEventListenerService
     this.logger.log('RabbitMQ Event Listener Service destroyed');
   }
 
-  onUserCreated(listener: EventListener): void {
-    this.eventEmitter.on('user.created', listener);
-    this.logger.log('Registered listener for user.created event');
+  onKeycloakUserRegistered(listener: EventListener): void {
+    this.eventEmitter.on('keycloak.user.registered', listener);
+    this.logger.log('Registered listener for keycloak.user.registered event');
   }
 
-  onUserUpdated(listener: EventListener): void {
-    this.eventEmitter.on('user.updated', listener);
-    this.logger.log('Registered listener for user.updated event');
-  }
-
-  onUserDeleted(listener: EventListener): void {
-    this.eventEmitter.on('user.deleted', listener);
-    this.logger.log('Registered listener for user.deleted event');
-  }
-
-  onEmailNotification(listener: EventListener): void {
-    this.eventEmitter.on('email.notification', listener);
-    this.logger.log('Registered listener for email.notification event');
+  onKeycloakUserLoggedIn(listener: EventListener): void {
+    this.eventEmitter.on('keycloak.user.logged_in', listener);
+    this.logger.log('Registered listener for keycloak.user.logged_in event');
   }
 
   removeListener(event: string, listener: EventListener): void {

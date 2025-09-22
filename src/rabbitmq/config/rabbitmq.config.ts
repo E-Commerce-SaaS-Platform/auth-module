@@ -6,35 +6,20 @@ export default registerAs(
   (): RabbitMQConfig => ({
     uri: process.env.RABBITMQ_URI || 'amqp://localhost:5672',
     exchanges: {
-      default: process.env.RABBITMQ_DEFAULT_EXCHANGE || 'user-service',
-      user: process.env.RABBITMQ_USER_EXCHANGE || 'user-service.user',
-      notification:
-        process.env.RABBITMQ_NOTIFICATION_EXCHANGE ||
-        'user-service.notification',
+      default: process.env.RABBITMQ_KEYCLOAK_EXCHANGE || 'amq.topic',
+      keycloak: process.env.RABBITMQ_KEYCLOAK_EXCHANGE || 'amq.topic',
     },
     queues: {
-      userCreated: {
-        name: 'user.created',
-        exchange: 'user-service.user',
-        routingKey: 'user.created',
+      keycloakUserRegistered: {
+        name: 'keycloak.user.registered',
+        exchange: 'amq.topic',
+        routingKey: 'KK.EVENT.CLIENT.*.SUCCESS.*.REGISTER',
         options: { durable: true },
       },
-      userUpdated: {
-        name: 'user.updated',
-        exchange: 'user-service.user',
-        routingKey: 'user.updated',
-        options: { durable: true },
-      },
-      userDeleted: {
-        name: 'user.deleted',
-        exchange: 'user-service.user',
-        routingKey: 'user.deleted',
-        options: { durable: true },
-      },
-      emailNotification: {
-        name: 'email.notification',
-        exchange: 'user-service.notification',
-        routingKey: 'email.*',
+      keycloakUserLoggedIn: {
+        name: 'keycloak.user.logged_in',
+        exchange: 'amq.topic',
+        routingKey: 'KK.EVENT.CLIENT.*.SUCCESS.*.LOGIN',
         options: { durable: true },
       },
     },

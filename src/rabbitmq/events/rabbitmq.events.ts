@@ -11,19 +11,11 @@ export class RabbitMQEventEmitter extends EventEmitter {
     return RabbitMQEventEmitter.instance;
   }
 
-  emitUserCreated(message: RabbitMQMessageDto): void {
-    this.emit('user.created', message);
+  emitKeycloakUserRegistered(message: RabbitMQMessageDto): void {
+    this.emit('keycloak.user.registered', message);
   }
 
-  emitUserUpdated(message: RabbitMQMessageDto): void {
-    this.emit('user.updated', message);
-  }
-
-  emitUserDeleted(message: RabbitMQMessageDto): void {
-    this.emit('user.deleted', message);
-  }
-
-  emitEmailNotification(message: RabbitMQMessageDto): void {
-    this.emit('email.notification', message);
+  emitKeycloakUserLoggedIn(message: RabbitMQMessageDto): void {
+    this.emit('keycloak.user.logged_in', message);
   }
 }

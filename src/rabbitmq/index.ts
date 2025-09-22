@@ -1,22 +1,22 @@
 // Module
 export { RabbitMQModule } from './rabbitmq.module';
 
-// Services
+// Services (publisher retained for potential outgoing events)
 export { RabbitMQPublisherService } from './services/rabbitmq-publisher.service';
 export { RabbitMQConsumerService } from './services/rabbitmq-consumer.service';
 export { RabbitMQEventListenerService } from './services/rabbitmq-event-listener.service';
 
+// Handlers
+export { KeycloakAuthHandler } from './handlers/keycloak-auth.handler';
+
 // DTOs
 export { RabbitMQMessageDto } from './dto/rabbitmq-message.dto';
-
-// Interfaces
 export {
-  RabbitMQHandler,
-  RabbitMQHandlerOptions,
-} from './interfaces/rabbitmq-handler.interface';
+  KeycloakUserEventDto,
+  KeycloakEventMessageDto,
+} from './dto/keycloak-event.dto';
 
-// Decorators
-export { RabbitMQHandler as RabbitMQHandlerDecorator } from './decorators/rabbitmq-handler.decorator';
+// (Removed unused handler interfaces/decorators exports)
 
 // Configuration
 export { RabbitMQConfig } from './config/rabbitmq-config.type';
