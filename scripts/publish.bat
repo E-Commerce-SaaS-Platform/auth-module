@@ -35,6 +35,14 @@ REM Publish to GitHub Package Registry
 call npm publish
 IF ERRORLEVEL 1 goto :fail
 
+REM Push commit and tags to remote
+IF exist .git (
+  call git push
+  IF ERRORLEVEL 1 echo Warning: git push failed (continuing)
+  call git push --tags
+  IF ERRORLEVEL 1 echo Warning: git push --tags failed (continuing)
+)
+
 echo Successfully published @E-Commerce-SaaS-Platform/auth-module@%VERSION%
 echo To install in other projects:
 echo yarn add @E-Commerce-SaaS-Platform/auth-module

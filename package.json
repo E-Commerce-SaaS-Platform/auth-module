@@ -1,6 +1,6 @@
 {
   "name": "@e-commerce-saas-platform/auth-module",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A NestJS RabbitMQ consumer module that subscribes to queues and emits events for other services to listen to",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
